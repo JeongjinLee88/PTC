@@ -1,1 +1,1 @@
-# Linear regression and partial tail correlation in multivarate extreme analysis
+# Hypothesis testing for partial tail correlation in multivarate extremes
