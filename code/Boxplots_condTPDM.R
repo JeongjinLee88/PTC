@@ -1,4 +1,4 @@
-load(file = "Output.RData")
+load(file = "Output_unif.RData")
 ##  Case 1. A pxq matrix C from a uniform dist
 set.seed(1234)
 Nrow=7; Ncol=30; min=0; max=5
@@ -21,7 +21,7 @@ TPDM_X=C%*%t(C)
 ##  Box-plot for conditional TPDM estimates (off-diagonal)
 ##  1) n=1500
 # Combine your vectors into a named list
-pdf("/home/leej40/Documents/PTC/Code/condTPDM_n_1500.pdf",6,6)
+#pdf("/home/leej40/Documents/PTC/Code/condTPDM_n_1500.pdf",6,6)
 par(mar=c(5.1,5.1,2,2))
 data_to_plot <- list(
   "A" = Output$n_1500_frac_0.1$TPDM.h_K.L[1,2,],
@@ -61,7 +61,7 @@ abline(h = Output$n_1500_frac_0.1$TPDM_K.L[1,2], col = "red", lty = 2, lwd = 2)
 dev.off()
 
 ##  2) n=2000
-pdf("/home/leej40/Documents/PTC/Code/condTPDM_n_2500.pdf",6,6)
+#pdf("/home/leej40/Documents/PTC/Code/condTPDM_n_2500.pdf",6,6)
 par(mar=c(5.1,5.1,2,2))
 data_to_plot <- list(
   "A" = Output$n_2500_frac_0.1$TPDM.h_K.L[1,2,],
@@ -102,7 +102,7 @@ abline(h = Output$n_2500_frac_0.1$TPDM_K.L[1,2], col = "red", lty = 2, lwd = 2)
 dev.off()
 
 ##  3) n=4000
-pdf("/home/leej40/Documents/PTC/Code/condTPDM_n_4000.pdf",6,6)
+#pdf("/home/leej40/Documents/PTC/Code/condTPDM_n_4000.pdf",6,6)
 par(mar=c(5.1,5.1,2,2))
 data_to_plot <- list(
   "A" = Output$n_4000_frac_0.1$TPDM.h_K.L[1,2,],

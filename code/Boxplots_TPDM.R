@@ -1,4 +1,4 @@
-load(file = "Output.RData")
+load(file = "Output_unif.RData")
 ##  Case 1. A pxq matrix C from a uniform dist
 set.seed(1234)
 Nrow=7; Ncol=30; min=0; max=5
@@ -34,7 +34,7 @@ for (i in 1:d_set) {
   }
 }
 
-pdf("/home/leej40/Documents/PTC/Code/Figures/TPDM_n_1500_frac_0.1.pdf",6,6)
+#pdf("/home/leej40/Documents/PTC/Code/Figures/TPDM_n_1500_frac_0.1.pdf",6,6)
 #dev.new()
 par(mar = c(5, 4, 4, 2) + 0.1)
 boxplot(upper_triangle_list,
