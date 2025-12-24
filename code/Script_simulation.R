@@ -20,6 +20,8 @@ Low_ar1[upper.tri(Low_ar1)] <-0
 seq=1:dim(Low_ar1)[1]
 ind_new=c(c(2,4),seq[-c(2,4)])
 C=Low_ar1[ind_new,ind_new]
+##  When creating box-plots of TPDM estimates, no reordering
+C=Low_ar1
 ##  True TPDM
 TPDM_X=C%*%t(C)
 sum(diag(TPDM_X))
@@ -43,7 +45,7 @@ Output <- mapply(
     C = C,
     TPDM_X = TPDM_X,
     ite = 1000,
-    gInv=F),SIMPLIFY = FALSE)
+    gInv=F),SIMPLIFY = FALSE) # for small k, gInv=T
 
 ##  Create descriptive names for each list element
 names(Output) <- paste0("n_", param_grid$n, "_frac_", param_grid$frac)
