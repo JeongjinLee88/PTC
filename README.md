@@ -1,4 +1,4 @@
-# Hypothesis testing for partial tail correlation in multivarate extremes
+## Hypothesis testing for partial tail correlation in multivarate extremes
 
 ### 1. Script and its source files for simulation studies.
 
@@ -19,5 +19,5 @@
 
 ### Rdata files for applications:
 
-* danube.rda: Danube dataset obtained from the \texttt{graphicalExtremes} pacakges.
+* danube.rda: Danube dataset obtained from the graphicalExtremes pacakges.
 * Data.Zip: Datasets obtained from Asadi.et al (2015), provided in the Data.zip file within the Data folder.
