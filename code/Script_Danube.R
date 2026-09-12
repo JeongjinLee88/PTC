@@ -4,7 +4,7 @@ library(evd)
 library(igraph)
 
 ##  Set directory
-setwd("/home/leej40/Documents/PTC/Code")
+setwd("C:/Users/steco_000/Documents/PTC/Code")
 source("TransformedOperations.R") # transformed operations
 
 ##  Load Data
@@ -21,13 +21,18 @@ OriDat <- ComTSs[,-1]
 d <- dim(OriDat)[2]  # d = # of variables
 n <- dim(OriDat)[1]  # n = # of observations
 
+##  Declustered data
+OriDat <- DataEvents
+d <- dim(OriDat)[2]  # d = # of variables
+n <- dim(OriDat)[1]  # n = # of observations
+
 ##  Define an empirical CDF
 Uhat <- apply(OriDat, 2, function(i) rank(i)/(n+1))
 
 ##  Simulate from a shifted Pareto distribution
 shift=0.9352074
 Xp <- apply(Uhat, 2, function(x) (1-x)^(-1/2)-shift)
-frac=0.1
+frac=0.2
 k=ceiling(frac*n)
 ##  Radial/angular
 Rad=sqrt(apply(Xp^2,1,sum))
@@ -106,7 +111,21 @@ Ncomp=choose(Ngroup,2)    # number of pairwise comparisons (465)
 zMtx=TPDM.h_K.L_off/sqrt(Tau_sq_off/ThresExc) # matrix of test statistics
 z_crit=qnorm(0.05/Ncomp/2,lower.tail = F) # z-critical value
 
-##  Create a graph induced by PTC
+##  Tukey's procedure for pairwise comparisons
+#library(agricolae)
+#z_crit=qtukey(p = 0.95,nmeans = Ngroup,df = ThresExc*Ngroup-Ngroup)/sqrt(2)
+# 3.77
+
+#l=1:Ncomp
+#z_crit=qnorm(0.05/(2*(Ncomp-l+1)),lower.tail = FALSE)
+
+#zMtx_order=sort(abs(zMtx[upper.tri(zMtx)]),decreasing = T)
+#zMtx_order > z_crit
+#zMtx_order > 3.87
+#zMtx_order > 3.77
+
+
+
 ##  Fail to reject <=> disconnected edges
 AdjMtx=zMtx
 AdjMtx[abs(AdjMtx)<=z_crit]=0
@@ -116,13 +135,35 @@ AdjMtx=AdjMtx+t(AdjMtx)
 rownames(AdjMtx)=colnames(AdjMtx)=as.character(1:d)
 AdjMtx
 
+
+##  Holm-Bonferroni
+# 1. Extract the upper triangular elements (the Ncomp pairwise statistics)
+z_upper <- zMtx[upper.tri(zMtx)]
+
+# 2. Convert to raw two-sided p-values
+pvals_raw <- 2 * pnorm(abs(z_upper), lower.tail = FALSE)
+
+# 3. Apply the Holm-Bonferroni correction
+pvals_adj <- p.adjust(pvals_raw, method = "holm")
+
+# 4. Map the decisions (1 for reject, 0 for retain) to an adjacency matrix
+edges <- ifelse(pvals_adj < 0.05, 1, 0)
+AdjMtx <- matrix(0, nrow = d, ncol = d)
+AdjMtx[upper.tri(AdjMtx)] <- edges
+
+# 5. Symmetrize the matrix and assign names
+AdjMtx <- AdjMtx + t(AdjMtx)
+rownames(AdjMtx) <- colnames(AdjMtx) <- as.character(1:d)
+
+AdjMtx
+
 ##  Count connected edges
 sum(AdjMtx[upper.tri(AdjMtx)])
 # 25 significant edges: frac=0.1
  
 ##  Danube river network
-load("/home/leej40/Documents/PTC/graphicalExtremes/data/danube.rda")
-source("/home/leej40/Documents/PTC/Code/functions_graph.R")
+load("C:/Users/steco_000/Documents/PTC/graphicalExtremes/data/danube.rda")
+source("C:/Users/steco_000/Documents/PTC/Code/functions_graph.R")
 
 # Plot the physical flow
 danube_flow <- getDanubeFlowGraph()
